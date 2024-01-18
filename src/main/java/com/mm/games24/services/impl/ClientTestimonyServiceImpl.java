@@ -43,6 +43,27 @@ public class ClientTestimonyServiceImpl implements ClientTestimonyService{
 		
 		return allDtos;
 	}
+	
+	///Create multiple client DTOs
+	@Override
+	public List<ClientTestimonyDto> createMultipleClients(List<ClientTestimonyDto> clientTestimonyDtos) {
+		
+		List<ClientTestimony> clientList = clientTestimonyDtos.stream().map((client) -> modelMapper.map(client, ClientTestimony.class)).collect(Collectors.toList());
+		
+		///save to database
+		clientList.stream().forEach((client) -> {
+			
+			if(client.getClientName() != null && !client.getClientName().trim().isEmpty())
+			{
+				clientTestimonyRepo.save(client);
+			}
+		});
+		
+		List<ClientTestimonyDto> clientDtosList = clientList.stream().map((client) -> modelMapper.map(client, ClientTestimonyDto.class)).collect(Collectors.toList());
+		
+		return clientDtosList;
+		
+	}
 
 		
 	

@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.mm.games24.config.AppConstants;
 import com.mm.games24.payloads.ApiResponse;
+import com.mm.games24.payloads.CategoryDto;
 import com.mm.games24.payloads.GameDto;
 import com.mm.games24.payloads.GameResponse;
 import com.mm.games24.services.FileService;
@@ -51,6 +52,21 @@ public class GameController {
 		GameDto savedGame = this.gameService.createGame(gameDto, categoryId);
 		
 		return new ResponseEntity<>(savedGame, HttpStatus.CREATED);
+	}
+	
+	///Add multiple Games
+	@PostMapping("/add-games")
+	public ResponseEntity<List<GameDto>> addMultipleGames(@Valid @RequestBody List<GameDto> gameDtos)
+	{
+		for(int gameDto = 0; gameDto < gameDtos.size(); gameDto++)
+		{
+			GameDto game = gameDtos.get(gameDto);
+			int categoryId = gameDtos.get(gameDto).getCategory().getCategoryId();
+			
+			this.gameService.createGame(game, categoryId);	
+		}
+		
+		return new ResponseEntity<List<GameDto>>(gameDtos, HttpStatus.CREATED);
 	}
 	
 	///Get all games

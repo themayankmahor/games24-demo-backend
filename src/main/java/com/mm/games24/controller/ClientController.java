@@ -32,6 +32,15 @@ public class ClientController {
 		return new ResponseEntity<ClientTestimonyDto>(createdClient, HttpStatus.CREATED);
 	}
 	
+	///Create multiple clients
+	@PostMapping("/create-clients")
+	ResponseEntity<List<ClientTestimonyDto>> createMultipleClients(@Valid @RequestBody List<ClientTestimonyDto> clientTestimonyDtos)
+	{
+		List<ClientTestimonyDto> createdClients = clientTestimonyService.createMultipleClients(clientTestimonyDtos);
+		
+		return new ResponseEntity<List<ClientTestimonyDto>>(createdClients, HttpStatus.CREATED);
+	}
+	
 	///Get all clients
 	@GetMapping("/")
 	ResponseEntity<List<ClientTestimonyDto>> getAllClients()

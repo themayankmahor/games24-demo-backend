@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +20,7 @@ import com.mm.games24.payloads.GameDto;
 import com.mm.games24.payloads.GameResponse;
 import com.mm.games24.repository.CategoryRepo;
 import com.mm.games24.repository.GameRepo;
+import com.mm.games24.services.FileService;
 import com.mm.games24.services.GameService;
 
 @Service
@@ -33,6 +35,12 @@ public class GameServiceImpl implements GameService{
 	@Autowired
 	private ModelMapper modelMapper;
 	
+	@Autowired
+	private FileService fileService;
+	
+	@Value("${project.image}")
+	private String path;
+	
 	///Create Game
 	@Override
 	public GameDto createGame(GameDto gameDto, int categoryId) {
@@ -44,13 +52,28 @@ public class GameServiceImpl implements GameService{
 		Game game = this.modelMapper.map(gameDto, Game.class);
 		
 		game.setAddedDate(new Date());
-		game.setImageName("default.png");
+		game.setImageName("default.png");		
 		game.setCategory(category);
 		
 		//save game (post) to database
 		Game savedGame = this.gameRepo.save(game);
 		
 		return this.modelMapper.map(savedGame, GameDto.class);
+	}
+	
+	///Create Multiple Games
+	@Override
+	public List<GameDto> createMultipleGames(List<GameDto> gameDtos) {
+		
+		///convert dtos to entity objs
+		List<Game> games = gameDtos.stream().map((game) -> modelMapper.map(game, Game.class)).collect(Collectors.toList());
+		
+		games.stream().forEach((game) -> {
+			
+			gameRepo.save(game);		
+		});
+		
+		return games.stream().map((game) -> modelMapper.map(game, GameDto.class)).collect(Collectors.toList());
 	}
 	
 	///Get all games
@@ -137,5 +160,7 @@ public class GameServiceImpl implements GameService{
 		//delete game
 		this.gameRepo.delete(game);
 	}
+
+
 
 }

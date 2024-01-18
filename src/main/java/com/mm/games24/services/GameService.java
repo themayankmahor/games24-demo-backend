@@ -10,6 +10,9 @@ public interface GameService {
 	///Create Game
 	GameDto createGame(GameDto gameDto, int categroyId);
 	
+	///Add multiple games
+	List<GameDto> createMultipleGames(List<GameDto> gameDtos);
+	
 	///update game
 	GameDto updateGame(GameDto gameDto, int gameId);
 	
