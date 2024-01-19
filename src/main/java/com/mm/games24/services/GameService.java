@@ -19,6 +19,9 @@ public interface GameService {
 	///get all game
 	GameResponse getAllGame(int pageNumber, int pageSize, String sortBy, String sortDir);
 	
+	///get every game
+	List<GameDto> getEveryGame();
+	
 	///get single game
 	GameDto getGameById(int gameId);
 	

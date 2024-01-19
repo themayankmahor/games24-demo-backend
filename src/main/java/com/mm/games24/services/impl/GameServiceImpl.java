@@ -179,6 +179,16 @@ public class GameServiceImpl implements GameService{
 		//delete game
 		this.gameRepo.delete(game);
 	}
+	
+	///Get every Game
+	@Override
+	public List<GameDto> getEveryGame() {
+		
+		//
+		List<Game> games = gameRepo.findAll();
+		
+		return games.stream().map((game) -> this.modelMapper.map(game, GameDto.class)).collect(Collectors.toList());
+	}
 
 
 

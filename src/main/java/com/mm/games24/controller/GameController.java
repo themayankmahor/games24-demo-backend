@@ -83,6 +83,15 @@ public class GameController {
 		return new ResponseEntity<GameResponse>(gameResponse, HttpStatus.OK);
 	}
 	
+	///Get multiple Games
+	@GetMapping("/get-all-games/")
+	public ResponseEntity<List<GameDto>> getEveryGame()
+	{
+		List<GameDto> allGames = gameService.getEveryGame();
+		
+		return new ResponseEntity<List<GameDto>>(allGames, HttpStatus.OK);
+	}
+	
 	///Get game by ID
 	@GetMapping("/{gameId}")
 	public ResponseEntity<GameDto> getGameById(@PathVariable("gameId") int gameId)
