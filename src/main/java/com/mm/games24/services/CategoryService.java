@@ -14,4 +14,7 @@ public interface CategoryService {
 	
 	///get single category
 	CategoryDto getSingleCategory(int categoryId);
+	
+	///delete category
+	void deleteCategory(int categoryId);
 }

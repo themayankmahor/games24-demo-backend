@@ -8,7 +8,7 @@ import com.mm.games24.payloads.GameResponse;
 public interface GameService {
 
 	///Create Game
-	GameDto createGame(GameDto gameDto, int categroyId);
+	GameDto createGame(GameDto gameDto, int categroyId, int tagId);
 	
 	///Add multiple games
 	List<GameDto> createMultipleGames(List<GameDto> gameDtos);

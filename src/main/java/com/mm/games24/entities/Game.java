@@ -33,15 +33,36 @@ public class Game {
 	
 	@Column(length = 10000)
 	private String description;
-	
+		
+	///Links
 	private String googlePlayLink;
 	
-	private String imageName;
+	private String appleStoreLink;
 	
+	private String steamLink;
+	
+	///Images
+	private String bannerImage;
+	
+	private String squareImage;
+	
+	///Screen shots
+	private String screenShot1;
+	
+	private String screenShot2;
+	
+	private String screenShot3;
+	
+	private String screenShot4;
+	
+	///Data
 	private Date addedDate;
 	
 	@ManyToOne
 	@JoinColumn(name = "category_id")
 	private Category category;
 	
+	@ManyToOne
+	@JoinColumn(name = "tag_id")
+	private Tag tag;
 }

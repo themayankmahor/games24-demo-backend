@@ -14,4 +14,7 @@ public interface ClientTestimonyService {
 	
 	///get all client
 	List<ClientTestimonyDto> getAllTestimony();
+	
+	///delete all clients
+	void deleteClientTestimony(int clientId);
 }

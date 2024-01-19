@@ -15,11 +15,13 @@ import org.springframework.stereotype.Service;
 
 import com.mm.games24.entities.Category;
 import com.mm.games24.entities.Game;
+import com.mm.games24.entities.Tag;
 import com.mm.games24.exceptions.ResourceNotFoundException;
 import com.mm.games24.payloads.GameDto;
 import com.mm.games24.payloads.GameResponse;
 import com.mm.games24.repository.CategoryRepo;
 import com.mm.games24.repository.GameRepo;
+import com.mm.games24.repository.TagRepo;
 import com.mm.games24.services.FileService;
 import com.mm.games24.services.GameService;
 
@@ -33,6 +35,9 @@ public class GameServiceImpl implements GameService{
 	private CategoryRepo categoryRepo;
 	
 	@Autowired
+	private TagRepo tagRepo;
+	
+	@Autowired
 	private ModelMapper modelMapper;
 	
 	@Autowired
@@ -43,16 +48,25 @@ public class GameServiceImpl implements GameService{
 	
 	///Create Game
 	@Override
-	public GameDto createGame(GameDto gameDto, int categoryId) {
+	public GameDto createGame(GameDto gameDto, int categoryId, int tagId) {
 		
 		//get category  by ID
 		Category category = this.categoryRepo.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category ", " category ID ", categoryId));
+		
+		//get Tag by ID
+		Tag tag = this.tagRepo.findById(tagId).orElseThrow(() -> new ResourceNotFoundException("Tag ", "tag ID", tagId));
 		
 		///Convert game dto to game (obj)
 		Game game = this.modelMapper.map(gameDto, Game.class);
 		
 		game.setAddedDate(new Date());
-		game.setImageName("default.png");		
+//		game.setBannerImage("default.png");		
+//		game.setSquareImage("default.png");		
+//		game.setScreenShot1("default.png");		
+//		game.setScreenShot2("default.png");		
+//		game.setScreenShot3("default.png");		
+//		game.setScreenShot4("default.png");
+		game.setTag(tag);
 		game.setCategory(category);
 		
 		//save game (post) to database
@@ -116,7 +130,12 @@ public class GameServiceImpl implements GameService{
 		
 		//update game data
 		game.setGameTitle(gameDto.getGameTitle());
-		game.setImageName(gameDto.getImageName());
+		game.setBannerImage(gameDto.getBannerImage());
+		game.setSquareImage(gameDto.getSquareImage());
+		game.setScreenShot1(gameDto.getScreenShot1());
+		game.setScreenShot2(gameDto.getScreenShot2());
+		game.setScreenShot3(gameDto.getScreenShot3());
+		game.setScreenShot4(gameDto.getScreenShot4());
 		game.setDescription(gameDto.getDescription());
 		game.setGooglePlayLink(gameDto.getGooglePlayLink());
 		game.setCategory(category);

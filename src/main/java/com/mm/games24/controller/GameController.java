@@ -46,29 +46,29 @@ public class GameController {
 	private String path;
 	
 	///Add Game
-	@PostMapping("/category/{categoryId}")
-	public ResponseEntity<GameDto> createGame(@Valid @RequestBody GameDto gameDto, @PathVariable("categoryId") int categoryId)
+	@PostMapping("/category/{categoryId}/tag/{tagId}")
+	public ResponseEntity<GameDto> createGame(@Valid @RequestBody GameDto gameDto, @PathVariable("categoryId") int categoryId, @PathVariable("tagId") int tagId)
 	{
-		GameDto savedGame = this.gameService.createGame(gameDto, categoryId);
+		GameDto savedGame = this.gameService.createGame(gameDto, categoryId, tagId);
 		
 		return new ResponseEntity<>(savedGame, HttpStatus.CREATED);
 	}
 	
 	///Add multiple Games
-	@PostMapping("/add-games")
-	public ResponseEntity<List<GameDto>> addMultipleGames(@Valid @RequestBody List<GameDto> gameDtos)
-	{
-		for(int gameDto = 0; gameDto < gameDtos.size(); gameDto++)
-		{
-			GameDto game = gameDtos.get(gameDto);
-			int categoryId = gameDtos.get(gameDto).getCategory().getCategoryId();
-			
-			this.gameService.createGame(game, categoryId);	
-		}
-		
-		return new ResponseEntity<List<GameDto>>(gameDtos, HttpStatus.CREATED);
-	}
-	
+//	@PostMapping("/add-games")
+//	public ResponseEntity<List<GameDto>> addMultipleGames(@Valid @RequestBody List<GameDto> gameDtos)
+//	{
+//		for(int gameDto = 0; gameDto < gameDtos.size(); gameDto++)
+//		{
+//			GameDto game = gameDtos.get(gameDto);
+//			int categoryId = gameDtos.get(gameDto).getCategory().getCategoryId();
+//			
+//			this.gameService.createGame(game, categoryId);	
+//		}
+//		
+//		return new ResponseEntity<List<GameDto>>(gameDtos, HttpStatus.CREATED);
+//	}
+//	
 	///Get all games
 	@GetMapping("/")
 	public ResponseEntity<GameResponse> getAllGame(
@@ -119,9 +119,9 @@ public class GameController {
 		return new ApiResponse("Game successfully deleted !!!", true);
 	}
 	
-	///Upload Image
-	@PostMapping("/image/upload/{gameId}")
-	public ResponseEntity<GameDto> uploadGameImage(@RequestParam MultipartFile image,
+	///Upload Banner Image
+	@PostMapping("/image/upload-banner-image/{gameId}")
+	public ResponseEntity<GameDto> uploadGameBannerImage(@RequestParam("image") MultipartFile image,
 			@PathVariable("gameId") int gameId
 			) throws IOException
 	{
@@ -129,12 +129,91 @@ public class GameController {
 		
 		String fileName = fileService.uploadImage(path, image);
 		
-		gameDto.setImageName(fileName);
+		gameDto.setBannerImage(fileName);
 		GameDto updatedGame = gameService.updateGame(gameDto, gameId);
 		
 		return new ResponseEntity<GameDto>(updatedGame, HttpStatus.OK);
 	}
 	
+	///Upload Square Image
+	@PostMapping("/image/upload-square-image/{gameId}")
+	public ResponseEntity<GameDto> uploadGameSquareImage(@RequestParam MultipartFile image,
+			@PathVariable("gameId") int gameId
+			) throws IOException
+	{
+		GameDto gameDto = gameService.getGameById(gameId);
+		
+		String fileName = fileService.uploadImage(path, image);
+		
+		gameDto.setSquareImage(fileName);
+		GameDto updatedGame = gameService.updateGame(gameDto, gameId);
+		
+		return new ResponseEntity<GameDto>(updatedGame, HttpStatus.OK);
+	}
+	
+	///Upload Screen shot1 Image
+	@PostMapping("/image/upload-ss1-image/{gameId}")
+	public ResponseEntity<GameDto> uploadGameScreenShot1Image(@RequestParam MultipartFile image,
+			@PathVariable("gameId") int gameId
+			) throws IOException
+	{
+		GameDto gameDto = gameService.getGameById(gameId);
+		
+		String fileName = fileService.uploadImage(path, image);
+		
+		gameDto.setScreenShot1(fileName);
+		GameDto updatedGame = gameService.updateGame(gameDto, gameId);
+		
+		return new ResponseEntity<GameDto>(updatedGame, HttpStatus.OK);
+	}
+	
+	///Upload Screen shot2 Image
+	@PostMapping("/image/upload-ss2-image/{gameId}")
+	public ResponseEntity<GameDto> uploadGameScreenShot2Image(@RequestParam MultipartFile image,
+			@PathVariable("gameId") int gameId
+			) throws IOException
+	{
+		GameDto gameDto = gameService.getGameById(gameId);
+		
+		String fileName = fileService.uploadImage(path, image);
+		
+		gameDto.setScreenShot2(fileName);
+		GameDto updatedGame = gameService.updateGame(gameDto, gameId);
+		
+		return new ResponseEntity<GameDto>(updatedGame, HttpStatus.OK);
+	}
+	
+	///Upload Screen shot3 Image
+	@PostMapping("/image/upload-ss3-image/{gameId}")
+	public ResponseEntity<GameDto> uploadGameScreenShot3Image(@RequestParam MultipartFile image,
+			@PathVariable("gameId") int gameId
+			) throws IOException
+	{
+		GameDto gameDto = gameService.getGameById(gameId);
+		
+		String fileName = fileService.uploadImage(path, image);
+		
+		gameDto.setScreenShot3(fileName);
+		GameDto updatedGame = gameService.updateGame(gameDto, gameId);
+		
+		return new ResponseEntity<GameDto>(updatedGame, HttpStatus.OK);
+	}
+	
+	///Upload Screen shot4 Image
+	@PostMapping("/image/upload-ss4-image/{gameId}")
+	public ResponseEntity<GameDto> uploadGameScreenShot4Image(@RequestParam MultipartFile image,
+			@PathVariable("gameId") int gameId
+			) throws IOException
+	{
+		GameDto gameDto = gameService.getGameById(gameId);
+		
+		String fileName = fileService.uploadImage(path, image);
+		
+		gameDto.setScreenShot4(fileName);
+		GameDto updatedGame = gameService.updateGame(gameDto, gameId);
+		
+		return new ResponseEntity<GameDto>(updatedGame, HttpStatus.OK);
+	}
 	///get resource (IMAGE)
 	@GetMapping(value = "image/{imageName}", produces = MediaType.IMAGE_JPEG_VALUE)
 	public void downloadImage(@PathVariable("imageName") String imageName, HttpServletResponse response) throws IOException

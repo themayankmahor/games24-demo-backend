@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mm.games24.entities.ClientTestimony;
+import com.mm.games24.exceptions.ResourceNotFoundException;
 import com.mm.games24.payloads.ClientTestimonyDto;
 import com.mm.games24.payloads.GameDto;
 import com.mm.games24.repository.ClientTestimonyRepo;
@@ -63,6 +64,17 @@ public class ClientTestimonyServiceImpl implements ClientTestimonyService{
 		
 		return clientDtosList;
 		
+	}
+	
+	///Delete category
+	@Override
+	public void deleteClientTestimony(int clientId) {
+		
+		//find category
+		ClientTestimony clientTestimony = clientTestimonyRepo.findById(clientId).orElseThrow(() -> new ResourceNotFoundException("Client", "client ID", clientId));
+		
+		//delete from DB
+		clientTestimonyRepo.delete(clientTestimony);
 	}
 
 		
